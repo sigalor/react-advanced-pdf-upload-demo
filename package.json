@@ -1,0 +1,49 @@
+{
+  "name": "react-advanced-pdf-upload-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A demonstration of the AdvancedPdfUpload component from react-advanced-pdf-upload.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sigalor/react-advanced-pdf-upload-demo.git"
+  },
+  "author": "sigalor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sigalor/react-advanced-pdf-upload-demo/issues"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "sanitize.css": "^13.0.0",
+    "styled-components": "^5.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ],
+    "rules": {
+      "import/no-anonymous-default-export": "off"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
