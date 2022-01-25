@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Spinner from 'react-spinner-material';
 import { Slide, toast, ToastContainer } from 'react-toastify';
+import download from 'downloadjs';
 
-import AdvancedPdfUpload from './AdvancedPdfUpload';
+import AdvancedPdfUpload from 'react-advanced-pdf-upload';
 
 const OuterContainer = styled.div`
   width: 100%;
@@ -25,14 +26,28 @@ export default () => {
           <h1>react-advanced-pdf-upload</h1>
           <AdvancedPdfUpload
             components={{
+              dropzonePlaceholder: <p>Drag and drop PDF files here or click to select files.</p>,
               loading: <Spinner />,
-              uploadedPagesHeading: <h2>Uploaded pages</h2>,
-              dropzonePlaceholder: <p>Drag 'n' drop some files here, or click to select files</p>,
+              uploadedPagesHeading: (
+                <>
+                  <h2 style={{ marginBottom: 0 }}>Uploaded pages</h2>
+                  <small style={{ marginBottom: '1rem' }}>
+                    <i>You can change the page order here or remove or rotate pages.</i>
+                  </small>
+                </>
+              ),
+              pageNumber: ({ n }) => <i>{n}</i>,
+              finalizeButton: ({ loading, onClick, disabled }) => (
+                <button onClick={onClick} disabled={loading || disabled} style={{ marginTop: '1rem' }}>
+                  Finalize
+                </button>
+              ),
             }}
             previewResolution={100}
-            previewAreaHeight={240}
-            previewAreaPadding={16}
-            previewSpacing={32}
+            previewAreaHeight={300}
+            previewAreaPadding={24}
+            previewSpacing={40}
+            previewControlsHeight={50}
             loadPreviews={async data => {
               const res = await fetch('http://localhost:3001/render-pdf', {
                 method: 'POST',
@@ -42,7 +57,28 @@ export default () => {
                 },
                 body: JSON.stringify(data),
               }).catch(e => toast.error(e.message));
-              if (res) return await res.json();
+
+              if (res && res.status >= 200 && res.status < 299) {
+                return await res.json();
+              } else {
+                toast.error(res.statusText);
+              }
+            }}
+            buildPdf={async data => {
+              const res = await fetch('http://localhost:3001/build-pdf', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/pdf',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+              }).catch(e => toast.error(e.message));
+
+              if (res && res.status >= 200 && res.status < 299) {
+                download(await res.blob(), 'output.pdf', 'application/pdf');
+              } else {
+                toast.error(res.statusText);
+              }
             }}
           />
         </InnerContainer>
