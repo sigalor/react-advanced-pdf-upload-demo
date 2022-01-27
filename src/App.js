@@ -79,7 +79,7 @@ export default () => {
               }).catch(e => toast.error(e.message));
 
               if (res && res.status >= 200 && res.status < 299) {
-                download(await res.blob(), 'output.pdf', 'application/pdf');
+                download(await res.blob(), data.name, 'application/pdf');
               } else {
                 toast.error(res.statusText);
               }
