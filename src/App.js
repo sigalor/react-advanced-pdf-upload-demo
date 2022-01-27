@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Spinner from 'react-spinner-material';
 import { Slide, toast, ToastContainer } from 'react-toastify';
@@ -19,6 +19,10 @@ const InnerContainer = styled.div`
 `;
 
 export default () => {
+  const finalizeButtonRef = useRef(null);
+  const [finalizeButtonLoading, setFinalizeButtonLoading] = useState(false);
+  const [finalizeButtonDisabled, setFinalizeButtonDisabled] = useState(false);
+
   return (
     <>
       <OuterContainer>
@@ -37,11 +41,11 @@ export default () => {
                 </>
               ),
               pageNumber: ({ n }) => <i>{n}</i>,
-              finalizeButton: ({ loading, onClick, disabled }) => (
-                <button onClick={onClick} disabled={loading || disabled} style={{ marginTop: '1rem' }}>
-                  Finalize
-                </button>
-              ),
+            }}
+            finalizeButton={{
+              ref: finalizeButtonRef,
+              setLoading: setFinalizeButtonLoading,
+              setDisabled: setFinalizeButtonDisabled,
             }}
             previewResolution={100}
             previewAreaHeight={300}
@@ -81,6 +85,13 @@ export default () => {
               }
             }}
           />
+          <button
+            ref={finalizeButtonRef}
+            disabled={finalizeButtonLoading || finalizeButtonDisabled}
+            style={{ marginTop: '0.5rem' }}
+          >
+            {finalizeButtonLoading ? 'Loading...' : 'Finalize'}
+          </button>
         </InnerContainer>
       </OuterContainer>
       <ToastContainer position="bottom-left" transition={Slide} />
