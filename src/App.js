@@ -83,6 +83,8 @@ export default () => {
               } else {
                 toast.error(res.statusText);
               }
+
+              return 'resetLoading';
             }}
           />
           <button
